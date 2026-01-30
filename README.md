@@ -296,7 +296,7 @@ I did take a screenshot of the activity log showing that the scale up was initia
 
 In a real environment I could request an increase in quota but for this lab I just wanted to get the basic point across.
 
-Normally you would see rhe third instance provision and the load balancer would have another option to route traffic. When the average CPU drops below 30% again. The third instance would deprovision.
+Normally you would see the third instance provision and the load balancer would have another option to route traffic. When the average CPU drops below 30% again. The third instance would deprovision.
 
 Thanks for taking your time to go through my lab!
 
