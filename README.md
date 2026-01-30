@@ -270,7 +270,7 @@ You can also see that I set Instance Limits. The minimum, maximum and default nu
 
 <p>
 
-In order to test my new scale settings, I ran a stress test on one of the instances. This sets the CPU at 100% and will trigger the autoscale rule to set in.
+In order to test my new scale settings, I ran a Linux stress test on one of the instances. This sets the CPU at 100% and will trigger the autoscale rule to set in. Using Azure Metrics I could watch the CPU jump above 70%, once the five minute average hit, the trigger to provision the third server goes off.
 
 </p>
 
