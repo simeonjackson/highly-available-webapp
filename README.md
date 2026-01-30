@@ -53,8 +53,8 @@ In this project I designed a simple web app across a Virtual Machine Scale Set b
 - Azure Load Balancer
 - Virtual Machine Scale Sets (VMSS)
 - Custom Script Extension (Linux)
-- Azure Monitor & Insights
 - Nginx Web Server
+- Azure Montior & Insights
 - Stress Utility
 
 <h2>Operating Systems Used </h2>
@@ -93,7 +93,7 @@ IPv4 address space defined with a subnet `172.16.0.0/24`
 
 <p>
   
-For my web app I configured a Virtual Machine Scale Set (VMSS) with an Ubuntu Server image and two instances. Since I want these machines to run the same workload so I choose `Uniform` for the Orchestration Mode.
+For my web app I configured a Virtual Machine Scale Set (VMSS) with an Ubuntu Server image and two instances. Since I want these machines to run the same workload, I choose `Uniform` for the Orchestration Mode.
 
 </p>
 
@@ -236,30 +236,73 @@ The load balancer connected me to `webscale_0` (tws_highl000000). Now I am going
 
 <p>
 
-I wanted to add anothe component to this project adding an autoscale rule to add another server instance if the CPU hits  a certain threshold. This is a key component to efficient scaling of resources and something that is common in any business with a cloud environment.
+I wanted to add another component to this project adding an autoscale rule to add another server instance if the CPU hits  a certain threshold. This is a key component to efficient scaling of resources and something that is common in any business with a cloud environment.
 
 I was able to set up my VMSS to scale up but due to the limitations of my Azure trial, my third VM failed.
 
 Here is my walkthrough anyway.
 
+Under the Scaling tab in my VMSS resource, their are two options to scale resources. Manual Scale keeps a fixed instace count, where Autoscale can be configured to scale on metrics.
+
 </p>
 
 <img width="932" height="465" alt="Image" src="https://github.com/user-attachments/assets/f453b178-253e-41db-b3ba-7f5150c26c28" />
 
+<p>
+
+I added a few rules that would trigger scaling up or down the number of VM instances available.
+
+Adding an instance when CPU goes above 70% average over 5 minutes.
+
+</p>
+
 <img width="938" height="463" alt="Image" src="https://github.com/user-attachments/assets/0ee9337c-e9b1-408d-bae4-615d616f5ffc" />
 
+<p>
+
+And removing an instance when the CPU goes below 30% average over 5 minutes.
+
+You can also see that I set Instance Limits. The minimum, maximum and default number of instances that will be running.
+
+</p>
+
 <img width="939" height="462" alt="Image" src="https://github.com/user-attachments/assets/1e90c697-e31b-4aae-b1ea-4eff30054ad6" />
+
+<p>
+
+In order to test my new scale settings, I ran a stress test on one of the instances. This sets the CPU at 100% and will trigger the autoscale rule to set in.
+
+</p>
 
 <img width="576" height="284" alt="Image" src="https://github.com/user-attachments/assets/be59c4b3-65b4-460e-97d9-dba3e94a8c0f" />
 
 <img width="577" height="305" alt="Image" src="https://github.com/user-attachments/assets/a4db86f8-f3ef-45a9-878a-ebc74c524b35" />
 
-<img width="932" height="461" alt="Image" src="https://github.com/user-attachments/assets/47dfe2db-4686-4e56-857c-7b7b632e9cee" />
+<p>
+
+Unfortunately this is where my lab ended. My Azure trial subscription would not allow my VMSS to provision the third VM when CPU hit my threshold set. The trial only allows for 3 public IPs which I already had.
+
+I did take a screenshot of the activity log showing that the scale up was initiated. It also shows where the operation failed as it would put me over my VM quota.
+
+
+</p>
 
 <img width="939" height="464" alt="Image" src="https://github.com/user-attachments/assets/e16b4ea7-486e-4568-81ee-cbd72098ddb0" />
 
 <img width="938" height="464" alt="Image" src="https://github.com/user-attachments/assets/71ae5e26-ade5-48c2-a208-dd485ddc384f" />
 
+
+<p>
+
+In a real environment I could request an increase in quota but for this lab I just wanted to get the basic point across.
+
+Normally you would see rhe third instance provision and the load balancer would have another option to route traffic. When the average CPU drops below 30% again. The third instance would deprovision.
+
+Thanks for taking your time to go through my lab!
+
+-Simeon-
+
+</p>
 
 
 
